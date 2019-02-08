@@ -1,0 +1,49 @@
+﻿<Window x:Class="UI.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        WindowStartupLocation="CenterScreen"
+        xmlns:local="clr-namespace:UI.ViewModels"
+        mc:Ignorable="d"
+        Title="Подготовка файлов" Height="250" Width="700" Icon="/Resources/Icon1.ico">
+
+    <Window.DataContext>
+        <local:MainWindowViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="FontFamily" Value="console" />
+            <Setter Property="FontSize" Value="18" />
+        </Style>
+    </Window.Resources>
+
+
+        <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <TextBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4" Margin="7" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="{Binding Path=PathToLocalFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" />
+        <Button Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2"  Margin="7" Content="Открыть" Command="{Binding GetPath}" />
+
+        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"  Margin="7" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Путь к папке на сервере: " />
+        <TextBox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3" Margin="7" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="{Binding StorageFolderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="6" Margin="7" IsEnabled="{Binding IsReady, Mode=TwoWay}" Content="Ок"/>
+
+    </Grid>
+</Window>
