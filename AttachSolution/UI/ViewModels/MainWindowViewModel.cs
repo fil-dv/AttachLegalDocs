@@ -1,4 +1,5 @@
-﻿using QUp.ViewModels;
+﻿using Microsoft.WindowsAPICodePack.Dialogs;
+using QUp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -84,9 +85,15 @@ namespace UI.ViewModels
 
         void GetPathToFile()
         {
-            PathToLocalFolder = "return";
-            MessageBox.Show(PathToLocalFolder);            
-        }
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog
+            {
+                IsFolderPicker = true
+            };
 
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+            {
+                PathToLocalFolder = dialog.FileName;
+            }
+        }
     }
 }
