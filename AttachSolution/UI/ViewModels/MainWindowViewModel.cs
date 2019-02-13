@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using DbLayer;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using QUp.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -39,7 +40,7 @@ namespace UI.ViewModels
             }
         }
 
-        string _storageFolderName = "Archive/Legal.";
+        string _storageFolderName = @"Archive\Legal.";
         public string StorageFolderName
         {
             get { return _storageFolderName; }
@@ -47,8 +48,7 @@ namespace UI.ViewModels
             {
                 _storageFolderName = value;
                 CheckIsReady();
-                OnPropertyChanged();
-                
+                OnPropertyChanged();                
             }
         }
 
@@ -119,8 +119,33 @@ namespace UI.ViewModels
 
         void ParseFolder()
         {
-            List<FileInfo> list = FolderParser.GetFileList(PathToLocalFolder);
-        }        
+            List<FileInfo> fiList = MyHelper.GetFileList(PathToLocalFolder);
+            List<DbRecord> dbRecordList = PrepareDataToInsert(fiList);
+            MyHelper.InsertDataToDb(dbRecordList);
+        }
+
+        private List<DbRecord> PrepareDataToInsert(List<FileInfo> fiList)
+        {
+            List<DbRecord> dbRecords = new List<DbRecord>();
+
+            foreach (var item in fiList)
+            {               
+                string str = item.FullName.Replace(PathToLocalFolder, "").TrimStart(new char[] { '\\'});
+                int pos = str.IndexOf("\\");
+
+                DbRecord rec = new DbRecord()
+                {
+                    ID = str.Substring(0, pos),
+                    FileName = item.Name,
+                    FullPath = item.FullName.Replace(PathToLocalFolder, StorageFolderName),
+                    FileSize = item.Length,
+                    FileExt = item.Extension.Trim(new char[] { '.' })
+                };
+
+                dbRecords.Add(rec);
+            }
+            return dbRecords;
+        }
 
         #endregion
     }

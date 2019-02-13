@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DbLayer;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace UI.Models
 {
-    class FolderParser
+    class MyHelper
     {
         static string _currentPath = String.Empty;
 
@@ -31,11 +32,6 @@ namespace UI.Models
             return list;
         }
 
-        //private static string GetID(FileInfo file)
-        //{
-        //    string res = file.DirectoryName.Replace(); 
-        //}
-
         static private void PrepareFolder(string path)
         {
             DirectoryInfo dirInfo = new DirectoryInfo(path);
@@ -48,6 +44,11 @@ namespace UI.Models
                     file.Delete();
                 }
             }
+        }
+
+        internal static void InsertDataToDb(List<DbRecord> dbRecordList)
+        {
+            string query = QueryBuilder.BuildInsertQuery(dbRecordList);
         }
     }
 }

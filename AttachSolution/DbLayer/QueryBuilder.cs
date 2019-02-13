@@ -1,5 +1,4 @@
-﻿using DbLayer.Models.Insert;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,48 +7,25 @@ using System.Threading.Tasks;
 
 namespace DbLayer
 {
-    public enum QueryType { Select, Insert, Update, Delete }
 
     public class QueryBuilder
-    {
-        QueryType _type;
-
-        public QueryBuilder(QueryType queryType)
+    { 
+        public static string BuildInsertQuery(List<DbRecord> insertValues)
         {
-            _type = queryType;
-        }
-
-        public string BuildInsert(string targetTableName, InsertValues insertValues)
-        {
-            if (_type != QueryType.Insert)
-            {
-                return null;
-            }
-
             StringBuilder sb = new StringBuilder();
-            sb.Append(QueryType.Insert.ToString().ToUpper() + " INTO " + targetTableName.ToUpper() + " (");
-            Type type = typeof(InsertValues);
-            PropertyInfo[] info = type.GetProperties(BindingFlags.Public | BindingFlags.Instance);
-            foreach (var item in info)
+            sb.Append("INSERT ALL ");
+            foreach (var item in insertValues)
             {
-                sb.Append(item.Name + ", ");
+                sb.Append("INTO EADR.FILE_ATTACH (CURRENT_ID, FILE_NAME, FULL_PATH, FILE_SIZE, FILE_EXT) VALUES (");
+                sb.Append("'" + item.ID + "', " +
+                                "'" + item.FileName + "', " +
+                                "'" + item.FullPath + "', " +
+                                    + item.FileSize + ", " +
+                                "'" + item.FileExt + "')");
             }
-            sb.Remove(sb.Length - 2, 2);
 
-            sb.Append(@") VALUES (");
-            foreach (var item in info)
-            {
-                if (item.PropertyType == typeof(string))
-                {                    
-                    sb.Append("'" + item.GetValue(insertValues).ToString() + "', ");
-                }
-                else
-                {
-                    sb.Append(item.GetValue(insertValues).ToString() + ", ");
-                }
-            }
-            sb.Remove(sb.Length - 2, 2);
-            sb.Append(@")");
+            sb.Append("SELECT 1 FROM DUAL");
+
             return sb.ToString();
         }
     }

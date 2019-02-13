@@ -69,8 +69,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\DbRecord.cs" />
-    <Compile Include="Models\FolderParser.cs" />
+    <Compile Include="Models\MyHelper.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\RelayCommand.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
@@ -105,7 +104,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DbLayer\DbLayer.csproj">
+      <Project>{c002c8a5-2ad2-44aa-9304-7be95aae24d1}</Project>
+      <Name>DbLayer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Icon1.ico" />
   </ItemGroup>
