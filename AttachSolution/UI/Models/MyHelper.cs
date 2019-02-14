@@ -30,6 +30,11 @@ namespace UI.Models
                     list.Add(file);
                 }                
             }
+            FileInfo[] rootFiles = dirInfo.GetFiles("*", SearchOption.TopDirectoryOnly);
+            foreach (var item in rootFiles)
+            {
+                list.Add(item);
+            }
             return list;
         }
 

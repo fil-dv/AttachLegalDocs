@@ -40,6 +40,17 @@ namespace UI.ViewModels
             }
         }
 
+        bool _isWork = true;
+        public bool IsWork
+        {
+            get { return _isWork; }
+            set
+            {
+                _isWork = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         Visibility _visibility = Visibility.Hidden;
         public Visibility Visibility
@@ -145,11 +156,20 @@ namespace UI.ViewModels
 
         void ParseFolder()
         {
-            List<FileInfo> fiList = MyHelper.GetFileList(PathToLocalFolder);
-            List<DbRecord> dbRecordList = PrepareDataToInsert(fiList);
-            int count = MyHelper.InsertDataToDb(dbRecordList);
-            ResultText = String.Format("В таблицу {0} успешно внесены записи. {1} шт.", MyHelper.TableName, count);  
-            Visibility = Visibility.Visible;
+            try
+            {
+                List<FileInfo> fiList = MyHelper.GetFileList(PathToLocalFolder);
+                List<DbRecord> dbRecordList = PrepareDataToInsert(fiList);
+                int count = MyHelper.InsertDataToDb(dbRecordList);
+                ResultText = String.Format("В таблицу {0} успешно внесены записи. {1} шт.", MyHelper.TableName, count);
+                Visibility = Visibility.Visible;
+                IsReady = false;
+                IsWork = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }            
         }
 
         private List<DbRecord> PrepareDataToInsert(List<FileInfo> fiList)
@@ -157,18 +177,29 @@ namespace UI.ViewModels
             List<DbRecord> dbRecords = new List<DbRecord>();
 
             foreach (var item in fiList)
-            {               
-                string str = item.FullName.Replace(PathToLocalFolder, "").TrimStart(new char[] { '\\'});
-                int pos = str.IndexOf("\\");
-
-                DbRecord rec = new DbRecord()
+            {   
+                DbRecord rec = new DbRecord();
+                string localPath = item.FullName.Replace(PathToLocalFolder, "").TrimStart(new char[] { '\\' });
+                if (localPath.Contains("\\"))
                 {
-                    ID = str.Substring(0, pos),
-                    FileName = item.Name,
-                    FullPath = item.FullName.Replace(PathToLocalFolder, StorageFolderName),
-                    FileSize = item.Length,
-                    FileExt = item.Extension.Trim(new char[] { '.' })
-                };
+                    int pos = localPath.IndexOf("\\");
+                    rec.ID = localPath.Substring(0, pos);
+                }
+                else
+                    if (localPath.Contains("."))
+                    {
+                        int pos = localPath.IndexOf(".");
+                        rec.ID = localPath.Substring(0, pos);
+                    }
+                    else
+                    {
+                        rec.ID = localPath;
+                    }                
+                rec.FileName = item.Name;
+                rec.FullPath = item.FullName.Replace(PathToLocalFolder, StorageFolderName);
+                rec.FullPath = rec.FullPath.Replace("\\","/");
+                rec.FileSize = item.Length;
+                rec.FileExt = item.Extension.Trim(new char[] { '.' });                
 
                 dbRecords.Add(rec);
             }
