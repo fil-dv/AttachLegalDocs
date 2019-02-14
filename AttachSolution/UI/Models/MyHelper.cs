@@ -12,6 +12,7 @@ namespace UI.Models
     class MyHelper
     {
         static string _currentPath = String.Empty;
+        public static readonly string TableName = "FILE_ATTACH";
 
         public static List<FileInfo> GetFileList(string path)
         {
@@ -46,9 +47,17 @@ namespace UI.Models
             }
         }
 
-        internal static void InsertDataToDb(List<DbRecord> dbRecordList)
+        internal static int InsertDataToDb(List<DbRecord> dbRecordList)
         {
-            string query = QueryBuilder.BuildInsertQuery(dbRecordList);
+            using (OraConnect con = new OraConnect())
+            {
+                string query = "truncate table " + TableName;
+                con.OpenConnect();
+                con.DoCommand(query);
+                query = QueryBuilder.BuildInsertQuery(TableName, dbRecordList);
+                con.DoCommand(query);
+                return dbRecordList.Count;
+            }                
         }
     }
 }

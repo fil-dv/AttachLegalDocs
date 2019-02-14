@@ -40,6 +40,32 @@ namespace UI.ViewModels
             }
         }
 
+
+        Visibility _visibility = Visibility.Hidden;
+        public Visibility Visibility
+        {
+            get { return _visibility; }
+            set
+            {
+                _visibility = value;
+                CheckIsReady();
+                OnPropertyChanged();
+            }
+        }
+
+
+        string _resultText = "Готово";
+        public string ResultText
+        {
+            get { return _resultText; }
+            set
+            {
+                _resultText = value;
+                CheckIsReady();
+                OnPropertyChanged();                
+            }
+        }
+
         string _storageFolderName = @"Archive\Legal.";
         public string StorageFolderName
         {
@@ -48,7 +74,7 @@ namespace UI.ViewModels
             {
                 _storageFolderName = value;
                 CheckIsReady();
-                OnPropertyChanged();                
+                OnPropertyChanged();
             }
         }
 
@@ -121,7 +147,9 @@ namespace UI.ViewModels
         {
             List<FileInfo> fiList = MyHelper.GetFileList(PathToLocalFolder);
             List<DbRecord> dbRecordList = PrepareDataToInsert(fiList);
-            MyHelper.InsertDataToDb(dbRecordList);
+            int count = MyHelper.InsertDataToDb(dbRecordList);
+            ResultText = String.Format("В таблицу {0} успешно внесены записи. {1} шт.", MyHelper.TableName, count);  
+            Visibility = Visibility.Visible;
         }
 
         private List<DbRecord> PrepareDataToInsert(List<FileInfo> fiList)

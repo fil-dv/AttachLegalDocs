@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DbLayer
 {
-    public class OraConnect
+    public class OraConnect:IDisposable
     {
         OracleConnection _con;
         OracleCommand _cmd;
@@ -34,6 +34,11 @@ namespace DbLayer
             //_cmd.ExecuteNonQueryAsync();
             _cmd.ExecuteNonQuery();
             _cmd.Dispose();
+        }
+
+        public void Dispose()
+        {
+            CloseConnect();
         }
     }
 }

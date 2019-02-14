@@ -10,13 +10,13 @@ namespace DbLayer
 
     public class QueryBuilder
     { 
-        public static string BuildInsertQuery(List<DbRecord> insertValues)
+        public static string BuildInsertQuery(string tableName, List<DbRecord> insertValues)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append("INSERT ALL ");
             foreach (var item in insertValues)
             {
-                sb.Append("INTO EADR.FILE_ATTACH (CURRENT_ID, FILE_NAME, FULL_PATH, FILE_SIZE, FILE_EXT) VALUES (");
+                sb.Append("INTO " + tableName + " (CURRENT_ID, FILE_NAME, FULL_PATH, FILE_SIZE, FILE_EXT) VALUES (");
                 sb.Append("'" + item.ID + "', " +
                                 "'" + item.FileName + "', " +
                                 "'" + item.FullPath + "', " +
@@ -25,7 +25,6 @@ namespace DbLayer
             }
 
             sb.Append("SELECT 1 FROM DUAL");
-
             return sb.ToString();
         }
     }
