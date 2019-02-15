@@ -158,10 +158,15 @@ namespace UI.ViewModels
         {
             try
             {
+                if (File.Exists("log.txt"))
+                {
+                    File.Delete("log.txt");
+                }
+                MyHelper.Tick += MyHelper_Tick;
                 List<FileInfo> fiList = MyHelper.GetFileList(PathToLocalFolder);
                 List<DbRecord> dbRecordList = PrepareDataToInsert(fiList);
-                int count = MyHelper.InsertDataToDb(dbRecordList);
-                ResultText = String.Format("В таблицу {0} успешно внесены записи. {1} шт.", MyHelper.TableName, count);
+                MyHelper.InsertDataToDb(dbRecordList);
+                ResultText = String.Format("В таблицу {0} успешно внесены записи. {1} шт.", MyHelper.TableName, dbRecordList.Count);
                 Visibility = Visibility.Visible;
                 IsReady = false;
                 IsWork = false;
@@ -170,6 +175,15 @@ namespace UI.ViewModels
             {
                 MessageBox.Show(ex.Message);
             }            
+        }
+
+        private void MyHelper_Tick(string text)
+        {
+            if (!File.Exists("log.txt"))
+            {
+                File.Create("log.txt").Close();
+            }
+            File.AppendAllText("log.txt", (text + Environment.NewLine));
         }
 
         private List<DbRecord> PrepareDataToInsert(List<FileInfo> fiList)

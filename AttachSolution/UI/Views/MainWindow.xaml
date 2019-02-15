@@ -46,11 +46,11 @@
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
-        <TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="8" Margin="7" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalScrollBarVisibility="Auto"  Text="{Binding Path=PathToLocalFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" />
+        <TextBox Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="8" Margin="7" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" HorizontalScrollBarVisibility="Auto" IsEnabled="{Binding IsWork, Mode=TwoWay}" Text="{Binding Path=PathToLocalFolder, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" />
         <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="8" Grid.ColumnSpan="4"  Margin="7" Content="Открыть" Command="{Binding GetPathCommand}" IsEnabled="{Binding IsWork, Mode=TwoWay}"/>
 
         <Label Grid.Row="2" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="6"  Margin="7" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="Путь к папке на сервере: " />
-        <TextBox Grid.Row="2" Grid.RowSpan="2" Grid.Column="6" Grid.ColumnSpan="6" Margin="7" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Text="{Binding StorageFolderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <TextBox Grid.Row="2" Grid.RowSpan="2" Grid.Column="6" Grid.ColumnSpan="6" Margin="7" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" IsEnabled="{Binding IsWork, Mode=TwoWay}" Text="{Binding StorageFolderName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <Button Grid.Row="4" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="12" Margin="7" IsEnabled="{Binding IsReady, Mode=TwoWay}" Command="{Binding ParseCommand}" Content="Ок"/>
 
