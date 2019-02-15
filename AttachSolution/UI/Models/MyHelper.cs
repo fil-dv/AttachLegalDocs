@@ -54,8 +54,7 @@ namespace UI.Models
         }
 
         internal static void InsertDataToDb(List<DbRecord> dbRecordList)
-        {
-            
+        {            
             CleanTable();
 
             int allCount = dbRecordList.Count;
@@ -64,7 +63,7 @@ namespace UI.Models
 
             while (currentCount < allCount)
             {
-                const int limit = 10;
+                const int limit = 500;
 
                 List<DbRecord> list = new List<DbRecord>();
                 for (int i = koef; i < koef + limit; i++)
