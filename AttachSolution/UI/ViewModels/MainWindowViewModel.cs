@@ -28,7 +28,6 @@ namespace UI.ViewModels
 
         #region properties
 
-
         bool _isReady = false;
         public bool IsReady
         {
@@ -51,7 +50,6 @@ namespace UI.ViewModels
             }
         }
 
-
         Visibility _visibility = Visibility.Hidden;
         public Visibility Visibility
         {
@@ -63,7 +61,6 @@ namespace UI.ViewModels
                 OnPropertyChanged();
             }
         }
-
 
         string _resultText = "Готово";
         public string ResultText
@@ -219,7 +216,6 @@ namespace UI.ViewModels
             }
             return dbRecords;
         }
-
         #endregion
     }
 }
